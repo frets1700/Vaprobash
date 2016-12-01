@@ -5,7 +5,7 @@ export LANG=C.UTF-8
 PHP_TIMEZONE=$1
 HHVM=$2
 PHP_VERSION=$3
-PHP_PATH="/etc/php5" && [[ $PHP_VERSION == "7.0" ]] && PHP_PATH="/etc/php/7.0"
+PHP_PATH="/etc/php/$PHP_VERSION"
 
 if [[ $HHVM == "true" ]]; then
 
@@ -39,12 +39,8 @@ else
         sudo apt-get install -y language-pack-en-base
         # Add repo for PHP 5.5
         sudo LC_ALL=en_US.UTF-8 add-apt-repository -y ppa:ondrej/php
-    elif [ $PHP_VERSION == "5.5" ]; then
-        # Add repo for PHP 5.5
-        sudo add-apt-repository -y ppa:ondrej/php5
     else
-        # Add repo for PHP 5.6
-        sudo add-apt-repository -y ppa:ondrej/php5-5.6
+        sudo add-apt-repository -y ppa:ondrej/php
     fi
 
     sudo apt-key update
@@ -56,7 +52,7 @@ else
         # xdebug not yet supported by xdebug
         sudo apt-get install -qq php7.0-cli php7.0-fpm php7.0-mysql php7.0-pgsql php7.0-sqlite php7.0-curl php7.0-gd php7.0-gmp php7.0-mcrypt php-memcached php-imagick php7.0-intl
     else
-        sudo apt-get install -qq php5-cli php5-fpm php5-mysql php5-pgsql php5-sqlite php5-curl php5-gd php5-gmp php5-mcrypt php5-memcached php5-imagick php5-intl php5-xdebug
+	sudo apt-get install -qq php$PHP_VERSION-cli php$PHP_VERSION-fpm php$PHP_VERSION-mysql php$PHP_VERSION-pgsql php$PHP_VERSION-sqlite php$PHP_VERSION-curl php$PHP_VERSION-gd php$PHP_VERSION-gmp php$PHP_VERSION-mcrypt php$PHP_VERSION-memcached php$PHP_VERSION-imagick php$PHP_VERSION-intl php$PHP_VERSION-xdebug
     fi
 
     # Set PHP FPM to listen on TCP instead of Socket
@@ -79,7 +75,7 @@ else
     echo ">>> Checking for potential xdebug.ini file to configure"
     CAT_CMD="$(find "$PHP_PATH" -name xdebug.ini)"
     cat > "${CAT_CMD}" << EOF
-zend_extension=$(find /usr/lib/php5 -name xdebug.so)
+zend_extension=xdebug.so
 xdebug.remote_enable = 1
 xdebug.remote_connect_back = 1
 xdebug.remote_port = 9000
@@ -101,9 +97,5 @@ EOF
     sudo sed -i "s/;date.timezone =.*/date.timezone = ${PHP_TIMEZONE/\//\\/}/" "${PHP_PATH}"/fpm/php.ini
     sudo sed -i "s/;date.timezone =.*/date.timezone = ${PHP_TIMEZONE/\//\\/}/" "${PHP_PATH}"/cli/php.ini
 
-    if [ $PHP_VERSION == "7.0" ]; then
-        sudo service php7.0-fpm restart
-    else
-        sudo service php5-fpm restart
-    fi
+    sudo service php$PHP_VERSION-fpm restart
 fi
