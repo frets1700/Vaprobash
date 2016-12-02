@@ -34,7 +34,7 @@ else
 
     sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4F4EA0AAE5267A6C
 
-    if [ $PHP_VERSION == "7.0" ]; then
+    if [ $PHP_VERSION == "7.1" ]; then
         # Fix potentially broken add-apt-repository locales
         sudo apt-get install -y language-pack-en-base
         # Add repo for PHP 5.5
@@ -48,15 +48,15 @@ else
 
     # Install PHP
     # -qq implies -y --force-yes
-    if [ $PHP_VERSION == "7.0" ]; then
+    if [ $PHP_VERSION == "7.1" ]; then
         # xdebug not yet supported by xdebug
-        sudo apt-get install -qq php7.0-cli php7.0-fpm php7.0-mysql php7.0-pgsql php7.0-sqlite php7.0-curl php7.0-gd php7.0-gmp php7.0-mcrypt php-memcached php-imagick php7.0-intl
+        sudo apt-get install -qq php7.1-cli php7.1-fpm php7.1-mysql php7.1-pgsql php7.1-sqlite php7.1-curl php7.1-gd php7.1-gmp php7.1-mcrypt php-memcached php-imagick php7.1-intl
     else
 	sudo apt-get install -qq php$PHP_VERSION-cli php$PHP_VERSION-fpm php$PHP_VERSION-mysql php$PHP_VERSION-pgsql php$PHP_VERSION-sqlite php$PHP_VERSION-curl php$PHP_VERSION-gd php$PHP_VERSION-gmp php$PHP_VERSION-mcrypt php$PHP_VERSION-xml php$PHP_VERSION-memcached php$PHP_VERSION-redis php$PHP_VERSION-imagick php$PHP_VERSION-intl php$PHP_VERSION-xdebug
     fi
 
     # Set PHP FPM to listen on TCP instead of Socket
-    sudo sed -i "s/listen =.*/listen = 127.0.0.1:9000/" "${PHP_PATH}"/fpm/pool.d/www.conf
+    sudo sed -i "s/listen =.*/listen = 127.1.0.1:9000/" "${PHP_PATH}"/fpm/pool.d/www.conf
 
     # Set PHP FPM allowed clients IP address
     sudo sed -i "s/;listen.allowed_clients/listen.allowed_clients/" "${PHP_PATH}"/fpm/pool.d/www.conf
