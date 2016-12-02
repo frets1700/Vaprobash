@@ -56,7 +56,7 @@ else
     fi
 
     # Set PHP FPM to listen on TCP instead of Socket
-    sudo sed -i "s/listen =.*/listen = 127.1.0.1:9000/" "${PHP_PATH}"/fpm/pool.d/www.conf
+    sudo sed -i "s/listen =.*/listen = 127.0.0.1:9000/" "${PHP_PATH}"/fpm/pool.d/www.conf
 
     # Set PHP FPM allowed clients IP address
     sudo sed -i "s/;listen.allowed_clients/listen.allowed_clients/" "${PHP_PATH}"/fpm/pool.d/www.conf
