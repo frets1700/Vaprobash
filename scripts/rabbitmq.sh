@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo ">>> talling RabbitMQ"
+echo ">>> Installing RabbitMQ"
 
 apt-get -y install erlang-nox
 wget http://www.rabbitmq.com/rabbitmq-release-signing-key.asc
