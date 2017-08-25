@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
+PHP_VERSION=$1
+
 echo ">>> Installing Mailcatcher"
 
 # Test if PHP is installed
 php -v > /dev/null 2>&1
-PHP_IS_INSTALLED=$1
-PHP_VERSION=0 && [[ $PHP_IS_INSTALLED -eq 0 ]] && PHP_VERSION=$(php -r 'echo PHP_MAJOR_VERSION;')
-PHP_PATH="/etc/php5" && [[ $PHP_VERSION -eq 7 ]] && PHP_PATH="/etc/php/7.0"
+PHP_IS_INSTALLED=$?
 
 # Test if Apache is installed
 apache2 -v > /dev/null 2>&1
@@ -14,7 +14,9 @@ APACHE_IS_INSTALLED=$?
 
 # Installing dependency
 # -qq implies -y --force-yes
-sudo apt-get install -qq libsqlite3-dev ruby1.9.1-dev
+sudo apt-add-repository ppa:brightbox/ruby-ng -y
+sudo apt-get update
+sudo apt-get install -qq libsqlite3-dev ruby2.2 ruby2.2-dev
 
 if $(which rvm) -v > /dev/null 2>&1; then
 	echo ">>>>Installing with RVM"
@@ -31,12 +33,9 @@ fi
 # Make it start on boot
 sudo tee /etc/init/mailcatcher.conf <<EOL
 description "Mailcatcher"
-
 start on runlevel [2345]
 stop on runlevel [!2345]
-
 respawn
-
 exec /usr/bin/env $(which mailcatcher) --foreground --http-ip=0.0.0.0
 EOL
 
@@ -45,15 +44,9 @@ sudo service mailcatcher start
 
 if [[ $PHP_IS_INSTALLED -eq 0 ]]; then
 	# Make php use it to send mail
-    echo "sendmail_path = /usr/bin/env $(which catchmail)" | sudo tee "${PHP_PATH}"/mods-available/mailcatcher.ini
-
-    if [[ PHP_VERSION -eq 7 ]]; then
-		sudo phpenmod mailcatcher
-		sudo service php7.0-fpm restart
-    else
-		sudo php5enmod mailcatcher
-		sudo service php5-fpm restart
-	fi
+    echo "sendmail_path = /usr/bin/env $(which catchmail)" | sudo tee /etc/php/${PHP_VERSION}/mods-available/mailcatcher.ini
+	sudo phpenmod mailcatcher
+	sudo service php${PHP_VERSION}-fpm restart
 fi
 
 if [[ $APACHE_IS_INSTALLED -eq 0 ]]; then
