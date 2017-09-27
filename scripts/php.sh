@@ -50,7 +50,7 @@ else
     # -qq implies -y --force-yes
     if [ $PHP_VERSION == "7.1" ]; then
         # xdebug not yet supported by xdebug
-        sudo apt-get install -qq php7.1-cli php7.1-fpm php7.1-mysql php7.1-pgsql php7.1-sqlite php7.1-curl php7.1-gd php7.1-gmp php7.1-mcrypt php-memcached php-imagick php7.1-intl
+        sudo apt-get install -qq php7.1-cli php7.1-fpm php7.1-mysql php7.1-pgsql php7.1-sqlite php7.1-curl php7.1-gd php7.1-gmp php7.1-mcrypt php-memcached php-imagick php7.1-intl php7.1-xdebug php7.1-redis php7.1-xml
     else
 	sudo apt-get install -qq php$PHP_VERSION-cli php$PHP_VERSION-fpm php$PHP_VERSION-mysql php$PHP_VERSION-pgsql php$PHP_VERSION-sqlite php$PHP_VERSION-curl php$PHP_VERSION-gd php$PHP_VERSION-gmp php$PHP_VERSION-mcrypt php$PHP_VERSION-xml php$PHP_VERSION-memcached php$PHP_VERSION-redis php$PHP_VERSION-imagick php$PHP_VERSION-intl php$PHP_VERSION-xdebug
     fi
