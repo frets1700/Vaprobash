@@ -4,6 +4,7 @@
 php -v > /dev/null 2>&1
 PHP_IS_INSTALLED=$?
 PHP_VERSION=0 && [[ $PHP_IS_INSTALLED -eq 0 ]] && PHP_VERSION=$(php -r 'echo PHP_MAJOR_VERSION;')
+PHP_VERSION_INSTALLED=$(php -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;')
 
 # Test if HHVM is installed
 hhvm --version > /dev/null 2>&1
@@ -69,7 +70,7 @@ if [[ $PHP_IS_INSTALLED -eq 0 || $HHVM_IS_INSTALLED -eq 0 ]]; then
 
     # PHP Config for Apache
     sudo a2enmod proxy_fcgi
-    sudo a2enconf php{$PHP_VERSION}-fpm
+    sudo a2enconf php{$PHP_VERSION_INSTALLED}-fpm
 else
     # vHost script assumes ProxyPassMatch to PHP
     # If PHP is not installed, we'll comment it out
