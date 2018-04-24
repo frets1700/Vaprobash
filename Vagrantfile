@@ -43,7 +43,7 @@ mongo_enable_remote   = "false"  # remote access enabled when true
 
 # Languages and Packages
 php_timezone          = "UTC"    # http://php.net/manual/en/timezones.php
-php_version           = "5.6"    # Options: 5.5 | 5.6 | 7.1
+php_version           = "5.6"    # Options: 5.5 | 5.6 | 7.1 | 7.2
 ruby_version          = "latest" # Choose what ruby version should be installed (will also be the default version)
 ruby_gems             = [        # List any Ruby Gems that you want to install
   #"jekyll",
@@ -90,8 +90,9 @@ sphinxsearch_version  = "rel22" # rel20, rel21, rel22, beta, daily, stable
 
 Vagrant.configure("2") do |config|
 
-  # Set server to Ubuntu 14.04
-  config.vm.box = "ubuntu/trusty64"
+  # Set server to Ubuntu 16.04
+  config.vm.box = "bento/ubuntu-16.04"
+  config.vm.box_version  = "201803.24.0"
 
   config.vm.define "Vaprobash" do |vapro|
   end
