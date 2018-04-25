@@ -17,7 +17,7 @@ else
 	sudo add-apt-repository "deb [arch=amd64,i386] http://mirrors.accretive-networks.net/mariadb/repo/$MARIADB_VERSION/ubuntu trusty main"
 fi
 
-sudo apt update
+sudo apt-get update
 
 # Install MariaDB without password prompt
 # Set username to 'root' and password to 'mariadb_root_password' (see Vagrantfile)
