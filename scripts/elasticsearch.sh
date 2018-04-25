@@ -38,7 +38,6 @@ sudo echo "http.cors.allow-origin: /https?:\/\/localhost(:[0-9]+)?/" >> /etc/ela
 
 # enable dynamic scripting
 sudo echo "script.inline: on" >> /etc/elasticsearch/elasticsearch.yml
-sudo echo "script.indexed: on" >> /etc/elasticsearch/elasticsearch.yml
 
 sudo service elasticsearch restart
 
